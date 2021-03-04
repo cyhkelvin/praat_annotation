@@ -1,0 +1,146 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0 
+xmax = 28.1875 
+tiers? <exists> 
+size = 1 
+item []: 
+    item [1]:
+        class = "IntervalTier" 
+        name = "silences" 
+        xmin = 0 
+        xmax = 28.1875 
+        intervals: size = 33 
+        intervals [1]:
+            xmin = 0 
+            xmax = 0.56175 
+            text = "SIL" 
+        intervals [2]:
+            xmin = 0.56175 
+            xmax = 4.1537500000000005 
+            text = "" 
+        intervals [3]:
+            xmin = 4.1537500000000005 
+            xmax = 4.80175 
+            text = "SIL" 
+        intervals [4]:
+            xmin = 4.80175 
+            xmax = 4.9697499999999994 
+            text = "" 
+        intervals [5]:
+            xmin = 4.9697499999999994 
+            xmax = 5.265750000000001 
+            text = "SIL" 
+        intervals [6]:
+            xmin = 5.265750000000001 
+            xmax = 6.0657499999999995 
+            text = "" 
+        intervals [7]:
+            xmin = 6.0657499999999995 
+            xmax = 6.553750000000001 
+            text = "SIL" 
+        intervals [8]:
+            xmin = 6.553750000000001 
+            xmax = 8.70575 
+            text = "" 
+        intervals [9]:
+            xmin = 8.70575 
+            xmax = 8.83375 
+            text = "SIL" 
+        intervals [10]:
+            xmin = 8.83375 
+            xmax = 9.393749999999999 
+            text = "" 
+        intervals [11]:
+            xmin = 9.393749999999999 
+            xmax = 9.553749999999999 
+            text = "SIL" 
+        intervals [12]:
+            xmin = 9.553749999999999 
+            xmax = 10.09775 
+            text = "" 
+        intervals [13]:
+            xmin = 10.09775 
+            xmax = 11.07375 
+            text = "SIL" 
+        intervals [14]:
+            xmin = 11.07375 
+            xmax = 12.97775 
+            text = "" 
+        intervals [15]:
+            xmin = 12.97775 
+            xmax = 13.08175 
+            text = "SIL" 
+        intervals [16]:
+            xmin = 13.08175 
+            xmax = 13.489749999999999 
+            text = "" 
+        intervals [17]:
+            xmin = 13.489749999999999 
+            xmax = 13.83375 
+            text = "SIL" 
+        intervals [18]:
+            xmin = 13.83375 
+            xmax = 16.19375 
+            text = "" 
+        intervals [19]:
+            xmin = 16.19375 
+            xmax = 16.921750000000003 
+            text = "SIL" 
+        intervals [20]:
+            xmin = 16.921750000000003 
+            xmax = 17.36175 
+            text = "" 
+        intervals [21]:
+            xmin = 17.36175 
+            xmax = 17.737750000000002 
+            text = "SIL" 
+        intervals [22]:
+            xmin = 17.737750000000002 
+            xmax = 19.153750000000002 
+            text = "" 
+        intervals [23]:
+            xmin = 19.153750000000002 
+            xmax = 19.29775 
+            text = "SIL" 
+        intervals [24]:
+            xmin = 19.29775 
+            xmax = 19.609750000000002 
+            text = "" 
+        intervals [25]:
+            xmin = 19.609750000000002 
+            xmax = 20.32175 
+            text = "SIL" 
+        intervals [26]:
+            xmin = 20.32175 
+            xmax = 21.569750000000003 
+            text = "" 
+        intervals [27]:
+            xmin = 21.569750000000003 
+            xmax = 22.09775 
+            text = "SIL" 
+        intervals [28]:
+            xmin = 22.09775 
+            xmax = 24.96975 
+            text = "" 
+        intervals [29]:
+            xmin = 24.96975 
+            xmax = 25.673750000000002 
+            text = "SIL" 
+        intervals [30]:
+            xmin = 25.673750000000002 
+            xmax = 27.29775 
+            text = "" 
+        intervals [31]:
+            xmin = 27.29775 
+            xmax = 27.401750000000003 
+            text = "SIL" 
+        intervals [32]:
+            xmin = 27.401750000000003 
+            xmax = 27.673750000000002 
+            text = "" 
+        intervals [33]:
+            xmin = 27.673750000000002 
+            xmax = 28.1875 
+            text = "SIL" 
