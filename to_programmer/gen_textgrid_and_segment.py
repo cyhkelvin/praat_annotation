@@ -172,7 +172,7 @@ def main(wavscp, outdir, text, sil_thres):
 
 
 if __name__=='__main__':
-    parser = argparse.ArgumentParser(description='e.g. python gen_textgrid_by_scp.py wav.scp output_folder -t text')
+    parser = argparse.ArgumentParser(description='e.g. python gen_textgrid_by_scp.py wav.scp output_folder -s 0.5')
     parser.add_argument('wavscp', help='text file with <utterance name> <wav_path>')
     parser.add_argument('outdir', help='output directory of textgrid files.')
     parser.add_argument('-t', '--text', type=str, help='text file with <utterance name> <text>', default=None)
