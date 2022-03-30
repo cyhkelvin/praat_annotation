@@ -6,7 +6,8 @@ from typing import Tuple
 class PraatTextgrid(object):
     @staticmethod
     def get_tiernames_from_tgfile(read_file, print_encoding_info=False):
-        for encoding_type in ['utf-8', 'utf-8-sig', 'utf-16', 'utf-16-le', 'utf-16-be']:
+        encoding_types = ['utf-8', 'utf-8-sig', 'utf-16', 'utf-16-le', 'utf-16-be']
+        for encoding_type in encoding_types:
             try:
                 tg = tgt.read_textgrid(read_file, encoding=encoding_type)
                 if type(tg) is tgt.core.TextGrid:
@@ -16,7 +17,11 @@ class PraatTextgrid(object):
             except:
                 # print(f'WARNING: failed with reading as {encoding_type}')
                 continue
-        tier_names = [tier.name for tier in tg.tiers]
+        try:
+            tier_names = [tier.name for tier in tg.tiers]
+        except:
+            print(f'ERROR: {read_file} not in {encoding_types}')
+            raise
         return tg, tier_names
         
     @staticmethod

@@ -35,6 +35,7 @@ def per_file_info_str(info_dict, info_index=-1, mod_annot=False):
     result_str += f'\tnum_speaker:{info_dict["num_speaker"][-1]}\n'
     result_str += f'\tduration:   {info_dict["duration"][-1]:.2f} sec\n'
     result_str += f'\tempty_dur:  {info_dict["empty_duration_percentage"][-1]*100:.2f}%\n'
+    result_str += f'\tempty_dur:  {info_dict["empty_duration"][-1]:.2f} sec\n'
     if mod_annot:
         result_str += f'\tnum_mod_chars:   {info_dict["num_mod_chars"][-1]}\n'
         result_str += f'\torigin_cer:      {info_dict["cer"][-1]}\n'
@@ -47,10 +48,10 @@ def total_info_str(info_dict, mod_annot=False):
         del info_dict['cer']
     for k, v in info_dict.items():
         if type(v) is list:
-            if k == 'duration':
+            if k == 'duration' or k == 'empty_duration':
                 result_str += f'{k}: {sum(v)/60:.2f} mins\n'
             elif k == 'empty_duration_percentage':
-                result_str += f'{k}: {sum(v)*100:.2f}%\n'
+                result_str += f'{k}: {sum(info_dict["empty_duration"])*100/sum(info_dict["duration"]):.2f}%\n'
             else:
                 result_str += f'{k}: {sum(v)}\n'
         else:
@@ -64,17 +65,19 @@ def count_info(input_folder:str, output_file, per_file_info=False, annot_type='n
     input_root = path.realpath(path.expanduser(path.normpath(input_folder)))
     tg_file_list = glob.glob(path.join(input_root, '**/*.TextGrid'), recursive=True)
     info_dict = {
-        'num_segs':list(),
+        'num_text_segs':list(),
+        'num_segs': list(),
         'num_chars':list(),
         'num_speaker':list(),
         'duration':list(),
+        'empty_duration': list(),
         'empty_duration_percentage': list(),  # (new:<30%; modified:~60%) segments(empty/silence/htr/<2chars) duration / (tier duration*num of tier)
         'num_mod_chars':list(),  # for modified files, original file is needed
         'cer':list(),  # for modified files, cer information filel is needed
         'num_file': 0,
-        'min_avg_segs':0,  # average segments per file
-        'min_avg_chars':0,  # average characters per minute
-        'seg_avg_chars':0,  # average characters of segment
+        'segs_per_min':0,  # average segments per file
+        'chars_per_min':0,  # average characters per minute
+        'chars_per_text_seg':0,  # average characters of segment
         'seg_avg_len':0  # average length of segment
     }
 
@@ -96,16 +99,28 @@ def count_info(input_folder:str, output_file, per_file_info=False, annot_type='n
                 else:
                     duration = tier.end_time
                 annot_text_list = [i.text for i in tier.annotations]
-                info_dict['num_segs'].append(len(annot_text_list))
-                info_dict['num_chars'].append(sum([count_chars(i) for i in annot_text_list]))
+                time_pointer, seg_count, text_seg_count = 0, len(annot_text_list), 0
                 for annot in tier.annotations:
+                    if annot.start_time > time_pointer:
+                        empty_dur += (annot.start_time - time_pointer)
+                        seg_count += 1
+                    time_pointer = annot.end_time
                     if len(annot.text) <= 2:
-                        empty_dur += (annot.end_time - annot.start_time)
+                        empty_dur += (time_pointer - annot.start_time)
+                    else:
+                        text_seg_count += 1
+                if time_pointer < duration:
+                    empty_dur += (duration - time_pointer)
+                    seg_count += 1
+                info_dict['num_segs'].append(seg_count)
+                info_dict['num_text_segs'].append(text_seg_count)
+                info_dict['num_chars'].append(sum([count_chars(i) for i in annot_text_list]))
                 num_speaker += 1
-            except:
-                print(f'ERROR: num_segs, num_chars goes wrong in {name} tier of {tgfile}!')
+            except Exception as e:
+                print(f'ERROR: num_segs, num_chars goes wrong in {name} tier of {tgfile}! error msg: {e}')
         info_dict['num_speaker'].append(num_speaker)
         info_dict['duration'].append(duration)
+        info_dict['empty_duration'].append(empty_dur)
         info_dict['empty_duration_percentage'].append(empty_dur/(len(tier_names)*duration))
         if per_file_info:
             file_info = per_file_info_str(info_dict, mod_annot=(annot_type=='mod'))
@@ -115,9 +130,9 @@ def count_info(input_folder:str, output_file, per_file_info=False, annot_type='n
         #     ori_tg_dict = read_origin_tg_folder(unmodified_tg_folder)
         # TODO: write output_file if is not None
     info_dict['num_file'] = len(tg_file_list)
-    info_dict['min_avg_segs'] = sum(info_dict['num_segs'])*60/sum(info_dict['duration'])
-    info_dict['min_avg_chars'] = sum(info_dict['num_chars'])*60/sum(info_dict['duration'])
-    info_dict['seg_avg_chars'] = sum(info_dict['num_chars'])/sum(info_dict['num_segs'])
+    info_dict['segs_per_min'] = sum(info_dict['num_segs'])*60/sum(info_dict['duration'])
+    info_dict['chars_per_min'] = sum(info_dict['num_chars'])*60/sum(info_dict['duration'])
+    info_dict['chars_per_text_seg'] = sum(info_dict['num_chars'])/sum(info_dict['num_text_segs'])
     info_dict['seg_avg_len'] = sum(info_dict['duration'])/sum(info_dict['num_segs'])
     total_info = total_info_str(info_dict)
     print(total_info)
